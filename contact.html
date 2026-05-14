@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact CYREX ExD</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" type="image/jpg" href="logo.jpg">
+    <link rel="apple-touch-icon" href="logo.jpg">
+</head>
+<body>
+
+<nav>
+    <div class="logo">
+
+        <img src="logo.jpg" alt="CYREX ExD Logo">
+
+    </div>
+
+    <ul>
+        <li><a href="index.html">Home</a></li>
+        <li><a href="videos.html">Videos</a></li>
+        <li><a href="updates.html">Updates</a></li>
+        <li><a href="discord.html">Discord</a></li>
+        <li><a href="contact.html">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="page-header">
+    <h1>Contact</h1>
+</section>
+
+<div class="contact-box">
+
+    <form id="contactForm">
+
+        <input 
+            type="text" 
+            id="name"
+            placeholder="Your Name"
+            required
+        >
+
+        <input 
+            type="email"
+            id="email"
+            placeholder="Your Email"
+            required
+        >
+
+        <textarea 
+            id="message"
+            placeholder="Message"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Send Message
+        </button>
+
+    </form>
+
+    <p id="status"></p>
+
+</div>
+
+<footer>
+    <p>© 2026 CYREX ExD</p>
+</footer>
+
+<script>
+
+const webhookURL = "https://discord.com/api/webhooks/1404800243161239562/Uvdfm-zcWHDwmon_Gc4fDUmMtCPaqNj2Qc0hTpQDeJIZi11TSwJPu1x3RWiBqMbtOBwR";
+
+document
+.getElementById("contactForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const name =
+    document.getElementById("name").value;
+
+    const email =
+    document.getElementById("email").value;
+
+    const message =
+    document.getElementById("message").value;
+
+    const payload = {
+        embeds: [{
+            title: "📩 New Contact Form Message",
+            color: 65535,
+
+            fields: [
+                {
+                    name: "Name",
+                    value: name
+                },
+
+                {
+                    name: "Email",
+                    value: email
+                },
+
+                {
+                    name: "Message",
+                    value: message
+                }
+            ],
+
+            footer: {
+                text: "CYREX ExD Website"
+            }
+        }]
+    };
+
+    try {
+
+        const response = await fetch(
+            webhookURL,
+            {
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body: JSON.stringify(payload)
+            }
+        );
+
+        if(response.ok){
+
+            document
+            .getElementById("status")
+            .innerHTML =
+            "Message sent successfully.";
+
+            document
+            .getElementById("contactForm")
+            .reset();
+
+        } else {
+
+            document
+            .getElementById("status")
+            .innerHTML =
+            "Failed to send message.";
+
+        }
+
+    } catch(error){
+
+        document
+        .getElementById("status")
+        .innerHTML =
+        "Error sending message.";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
