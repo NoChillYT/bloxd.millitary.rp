@@ -21,7 +21,7 @@ nav{
 
     background:#0d1117;
 
-    border-bottom:2px solid #6fc7ff;
+    border-bottom:2px solid #5cff8d;
 
     position:sticky;
     top:0;
@@ -42,7 +42,7 @@ nav{
     display:block;
 
     filter:
-    drop-shadow(0 0 10px #7dd4ff);
+    drop-shadow(0 0 10px #6dff9f);
 
     transition:0.3s;
 
@@ -57,17 +57,17 @@ nav{
 
     0%{
         filter:
-        drop-shadow(0 0 5px #6fc7ff);
+        drop-shadow(0 0 5px #5cff8d);
     }
 
     50%{
         filter:
-        drop-shadow(0 0 20px #8fe2ff);
+        drop-shadow(0 0 20px #7dffad);
     }
 
     100%{
         filter:
-        drop-shadow(0 0 5px #6fc7ff);
+        drop-shadow(0 0 5px #5cff8d);
     }
 
 }
@@ -87,7 +87,7 @@ nav a{
 }
 
 nav a:hover{
-    color:#8ed7ff;
+    color:#8fffba;
 }
 
 /* HERO */
@@ -114,16 +114,16 @@ nav a:hover{
 
 .hero h1{
     font-size:72px;
-    color:#9bddff;
+    color:#9dffb8;
 
     text-shadow:
-    0 0 20px #69cfff;
+    0 0 20px #5cff8d;
 }
 
 .hero p{
     margin-top:15px;
     font-size:22px;
-    color:#d4f3ff;
+    color:#d7ffe4;
 }
 
 /* BUTTONS */
@@ -133,7 +133,7 @@ nav a:hover{
 
     padding:14px 34px;
 
-    background:#6ecbff;
+    background:#5cff8d;
 
     color:black;
 
@@ -150,7 +150,7 @@ nav a:hover{
     transform:scale(1.08);
 
     box-shadow:
-    0 0 20px #79d0ff;
+    0 0 20px #72ff9f;
 }
 
 /* CARDS */
@@ -173,7 +173,7 @@ nav a:hover{
 
     border-radius:20px;
 
-    border:1px solid #74d0ff;
+    border:1px solid #63ff98;
 
     transition:0.3s;
 }
@@ -182,12 +182,12 @@ nav a:hover{
     transform:translateY(-10px);
 
     box-shadow:
-    0 0 25px #63caff;
+    0 0 25px #55ff8d;
 }
 
 .card h2{
     margin-bottom:15px;
-    color:#9de0ff;
+    color:#a8ffc2;
 }
 
 /* PAGE HEADER */
@@ -199,7 +199,7 @@ nav a:hover{
 
 .page-header h1{
     font-size:52px;
-    color:#97deff;
+    color:#98ffb8;
 }
 
 /* VIDEOS */
@@ -216,7 +216,7 @@ nav a:hover{
 
     border-radius:20px;
 
-    border:2px solid #7dd4ff;
+    border:2px solid #63ff98;
 
     background:black;
 }
@@ -241,7 +241,7 @@ textarea{
 
     background:#111827;
 
-    border:1px solid #72cfff;
+    border:1px solid #63ff98;
 
     border-radius:12px;
 
@@ -258,7 +258,7 @@ textarea{
 button{
     padding:15px;
 
-    background:#6ecbff;
+    background:#5cff8d;
 
     border:none;
 
@@ -275,7 +275,7 @@ button:hover{
     transform:scale(1.03);
 
     box-shadow:
-    0 0 20px #79d0ff;
+    0 0 20px #72ff9f;
 }
 
 /* DISCORD & UPDATES */
@@ -299,7 +299,7 @@ button:hover{
 
     border-radius:15px;
 
-    border:1px solid #74d0ff;
+    border:1px solid #63ff98;
 }
 
 /* FOOTER */
@@ -313,7 +313,7 @@ footer{
 
     border-top:1px solid #2d3748;
 
-    color:#8bbad3;
+    color:#8fd9aa;
 }
 
 /* MOBILE */
