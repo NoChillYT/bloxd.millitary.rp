@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bloxd Millitary Admin Portal</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+body{
+    background:#050505;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.admin-login,
+.admin-panel{
+    width:90%;
+    max-width:700px;
+    margin:60px auto;
+    background:#111827;
+    padding:35px;
+    border-radius:20px;
+    border:2px solid #5cff8d;
+    box-shadow:0 0 25px rgba(92,255,141,0.2);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    color:#9dffb8;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:15px;
+    margin-bottom:20px;
+    background:#0d1117;
+    border:1px solid #5cff8d;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+}
+
+textarea{
+    height:220px;
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#5cff8d;
+    color:black;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 20px #5cff8d;
+}
+
+#status{
+    text-align:center;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.role-box{
+    background:#0d1117;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
+    border:1px solid #2d3748;
+}
+
+.hidden{
+    display:none;
+}
+
+</style>
+
+</head>
+<body>
+
+<div class="admin-login" id="loginBox">
+
+    <h1>🔒 Admin Login</h1>
+
+    <input
+        type="text"
+        id="username"
+        placeholder="Username"
+    >
+
+    <input
+        type="password"
+        id="password"
+        placeholder="Password"
+    >
+
+    <button onclick="login()">
+        Login
+    </button>
+
+    <p id="loginStatus"></p>
+
+</div>
+
+<div class="admin-panel hidden" id="adminPanel">
+
+    <h1>🛠 Admin Portal</h1>
+
+    <div class="role-box">
+        Logged in as:
+        <span id="loggedUser"></span>
+    </div>
+
+    <form id="adminForm">
+
+        <select id="messageType" required>
+            <option value="">
+                Select Message Type
+            </option>
+
+            <option value="announcement">
+                Announcement
+            </option>
+
+            <option value="warning">
+                Warning
+            </option>
+
+            <option value="development">
+                Development Update
+            </option>
+        </select>
+
+        <input
+            type="text"
+            id="title"
+            placeholder="Embed Title"
+            required
+        >
+
+        <textarea
+            id="message"
+            placeholder="Message Content"
+            required
+        ></textarea>
+
+        <button type="submit">
+            Send Embed
+        </button>
+
+    </form>
+
+    <p id="status"></p>
+
+</div>
+
+<script>
+
+const accounts = {
+
+    creamkimi:
+    "TheCreamiestOfThemAll2026",
+
+    nochillyt:
+    "TheCodedCoder",
+
+    d3coy:
+    "Founders?",
+
+    developer:
+    "theDeveloper",
+
+    moderator:
+    "theModerator",
+
+    announcer:
+    "theAnnouncer"
+
+};
+
+const permissions = {
+
+    announcement: [
+        "creamkimi",
+        "nochillyt",
+        "d3coy",
+        "announcer"
+    ],
+
+    warning: [
+        "moderator",
+        "creamkimi",
+        "nochillyt",
+        "d3coy"
+    ],
+
+    development: [
+        "nochillyt",
+        "creamkimi",
+        "d3coy",
+        "developer"
+    ]
+
+};
+
+const webhooks = {
+
+    announcement:
+    "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
+
+    warning:
+    "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
+
+    development:
+    "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
+
+};
+
+let currentUser = "";
+
+function login(){
+
+    const username =
+    document.getElementById("username").value
+    .toLowerCase();
+
+    const password =
+    document.getElementById("password").value;
+
+    if(accounts[username] === password){
+
+        currentUser = username;
+
+        document
+        .getElementById("loginBox")
+        .classList
+        .add("hidden");
+
+        document
+        .getElementById("adminPanel")
+        .classList
+        .remove("hidden");
+
+        document
+        .getElementById("loggedUser")
+        .innerHTML =
+        username;
+
+    } else {
+
+        document
+        .getElementById("loginStatus")
+        .innerHTML =
+        "❌ Invalid login.";
+
+    }
+
+}
+
+document
+.getElementById("adminForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const type =
+    document.getElementById("messageType").value;
+
+    const title =
+    document.getElementById("title").value;
+
+    const message =
+    document.getElementById("message").value;
+
+    if(
+        !permissions[type]
+        .includes(currentUser)
+    ){
+
+        document
+        .getElementById("status")
+        .innerHTML =
+        "❌ You do not have permission.";
+
+        return;
+    }
+
+    let embedColor = 65280;
+    let embedEmoji = "📢";
+
+    if(type === "warning"){
+        embedColor = 16711680;
+        embedEmoji = "⚠️";
+    }
+
+    if(type === "development"){
+        embedColor = 5763719;
+        embedEmoji = "🛠";
+    }
+
+    const payload = {
+
+        embeds: [{
+
+            title:
+            `${embedEmoji} ${title}`,
+
+            description:
+            message,
+
+            color:
+            embedColor,
+
+            fields: [
+
+                {
+                    name: "Sent By",
+                    value: currentUser,
+                    inline: true
+                },
+
+                {
+                    name: "Type",
+                    value: type,
+                    inline: true
+                }
+
+            ],
+
+            footer: {
+                text:
+                "Bloxd Millitary Admin System"
+            },
+
+            timestamp:
+            new Date()
+
+        }]
+
+    };
+
+    try{
+
+        const response = await fetch(
+            webhooks[type],
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                    "application/json"
+                },
+
+                body:
+                JSON.stringify(payload)
+            }
+        );
+
+        if(response.ok){
+
+            document
+            .getElementById("status")
+            .innerHTML =
+            "✅ Embed sent successfully.";
+
+            document
+            .getElementById("adminForm")
+            .reset();
+
+        } else {
+
+            document
+            .getElementById("status")
+            .innerHTML =
+            "❌ Failed to send embed.";
+
+        }
+
+    } catch(error){
+
+        document
+        .getElementById("status")
+        .innerHTML =
+        "❌ Error sending embed.";
+
+    }
+
+});
+
+</script>
+
+</body>
+</html>
