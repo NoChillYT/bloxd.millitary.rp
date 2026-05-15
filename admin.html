@@ -133,15 +133,15 @@ button:hover{
                 Select Message Type
             </option>
 
-            <option value="announcement">
+            <option value="Announcement">
                 Announcement
             </option>
 
-            <option value="warning">
+            <option value="Warning">
                 Warning
             </option>
 
-            <option value="development">
+            <option value="Development">
                 Development Update
             </option>
         </select>
@@ -176,6 +176,9 @@ const accounts = {
     creamkimi:
     "TheCreamiestOfThemAll2026",
 
+    systemtesing:
+    "systemtesting",
+
     nochillyt:
     "TheCodedCoder",
 
@@ -195,38 +198,41 @@ const accounts = {
 
 const permissions = {
 
-    announcement: [
+    Announcement: [
         "creamkimi",
         "nochillyt",
         "d3coy",
-        "announcer"
+        "announcer",
+        "systemtesting"
     ],
 
-    warning: [
+    Warning: [
         "moderator",
         "creamkimi",
         "nochillyt",
-        "d3coy"
+        "d3coy",
+        "systemtesting"
     ],
 
-    development: [
+    Development: [
         "nochillyt",
         "creamkimi",
         "d3coy",
-        "developer"
+        "developer",
+        "systemtesting"
     ]
 
 };
 
 const webhooks = {
 
-    announcement:
+    Announcement:
     "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
 
-    warning:
+    Warning:
     "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
 
-    development:
+    Development:
     "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
 
 };
@@ -303,12 +309,12 @@ document
     let embedColor = 65280;
     let embedEmoji = "📢";
 
-    if(type === "warning"){
+    if(type === "Warning"){
         embedColor = 16711680;
         embedEmoji = "⚠️";
     }
 
-    if(type === "development"){
+    if(type === "Development"){
         embedColor = 5763719;
         embedEmoji = "🛠";
     }
