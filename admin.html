@@ -4,12 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Bloxd Millitary Admin Portal</title>
+<title>Bloxd Military Admin Portal</title>
 
 <link rel="stylesheet" href="style.css">
 
 <style>
-
 body{
     background:#050505;
     color:white;
@@ -87,36 +86,26 @@ button:hover{
 .hidden{
     display:none;
 }
-
 </style>
 
 </head>
+
 <body>
 
+<!-- LOGIN -->
 <div class="admin-login" id="loginBox">
 
     <h1>🔒 Admin Login</h1>
 
-    <input
-        type="text"
-        id="username"
-        placeholder="Username"
-    >
+    <input type="text" id="username" placeholder="Username">
+    <input type="password" id="password" placeholder="Password">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
-
-    <button onclick="login()">
-        Login
-    </button>
+    <button onclick="login()">Login</button>
 
     <p id="loginStatus"></p>
-
 </div>
 
+<!-- PANEL -->
 <div class="admin-panel hidden" id="adminPanel">
 
     <h1>🛠 Admin Portal</h1>
@@ -129,39 +118,17 @@ button:hover{
     <form id="adminForm">
 
         <select id="messageType" required>
-            <option value="">
-                Select Message Type
-            </option>
-
-            <option value="Announcement">
-                Announcement
-            </option>
-
-            <option value="Warning">
-                Warning
-            </option>
-
-            <option value="Development">
-                Development Update
-            </option>
+            <option value="">Select Message Type</option>
+            <option value="Announcement">Announcement</option>
+            <option value="Warning">Warning</option>
+            <option value="Development">Development Update</option>
         </select>
 
-        <input
-            type="text"
-            id="title"
-            placeholder="Embed Title"
-            required
-        >
+        <input type="text" id="title" placeholder="Embed Title" required>
 
-        <textarea
-            id="message"
-            placeholder="Message Content"
-            required
-        ></textarea>
+        <textarea id="message" placeholder="Message Content" required></textarea>
 
-        <button type="submit">
-            Send Embed
-        </button>
+        <button type="submit">Send Embed</button>
 
     </form>
 
@@ -172,137 +139,73 @@ button:hover{
 <script>
 
 const accounts = {
-
-    creamkimi:
-    "TheCreamiestOfThemAll2026",
-
-    systemtesing:
-    systemtesting:
-    "systemtesting",
-
-    nochillyt:
-    "TheCodedCoder",
-
-    d3coy:
-    "Founders?",
-
-    developer:
-    "theDeveloper",
-
-    moderator:
-    "theModerator",
-
-    announcer:
-    "theAnnouncer"
-
+    creamkimi: "TheCreamiestOfThemAll2026",
+    systemtesting: "systemtesting",
+    nochillyt: "TheCodedCoder",
+    d3coy: "Founders?",
+    developer: "theDeveloper",
+    moderator: "theModerator",
+    announcer: "theAnnouncer"
 };
 
 const permissions = {
-
-    Announcement: [
-        "creamkimi",
-        "nochillyt",
-        "d3coy",
-        "announcer",
-        "systemtesting"
-    ],
-
-    Warning: [
-        "moderator",
-        "creamkimi",
-        "nochillyt",
-        "d3coy",
-        "systemtesting"
-    ],
-
-    Development: [
-        "nochillyt",
-        "creamkimi",
-        "d3coy",
-        "developer",
-        "systemtesting"
-    ]
-
+    Announcement: ["creamkimi","nochillyt","d3coy","announcer","systemtesting"],
+    Warning: ["moderator","creamkimi","nochillyt","d3coy","systemtesting"],
+    Development: ["nochillyt","creamkimi","d3coy","developer","systemtesting"]
 };
 
 const webhooks = {
-
-    Announcement:
-    "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
-
-    Warning:
-    "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
-
-    Development:
-    "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
-
+    Announcement: "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
+    Warning: "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
+    Development: "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
 };
 
 let currentUser = "";
 
+/* LOGIN */
 function login(){
 
     const username =
-    document.getElementById("username").value
-    .toLowerCase();
+        document.getElementById("username").value.toLowerCase();
 
     const password =
-    document.getElementById("password").value;
+        document.getElementById("password").value;
 
     if(accounts[username] === password){
 
         currentUser = username;
 
-        document
-        .getElementById("loginBox")
-        .classList
-        .add("hidden");
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("adminPanel").classList.remove("hidden");
 
-        document
-        .getElementById("adminPanel")
-        .classList
-        .remove("hidden");
-
-        document
-        .getElementById("loggedUser")
-        .innerHTML =
-        username;
+        document.getElementById("loggedUser").innerText = username;
 
     } else {
 
-        document
-        .getElementById("loginStatus")
-        .innerHTML =
-        "❌ Invalid login.";
-
+        document.getElementById("loginStatus").innerText =
+            "❌ Invalid login.";
     }
-
 }
 
-document
-.getElementById("adminForm")
+/* SUBMIT */
+document.getElementById("adminForm")
 .addEventListener("submit", async function(e){
 
     e.preventDefault();
 
     const type =
-    document.getElementById("messageType").value;
+        document.getElementById("messageType").value;
 
     const title =
-    document.getElementById("title").value;
+        document.getElementById("title").value;
 
     const message =
-    document.getElementById("message").value;
+        document.getElementById("message").value;
 
-    if(
-        !permissions[type]
-        .includes(currentUser)
-    ){
+    if(!permissions[type].includes(currentUser)){
 
-        document
-        .getElementById("status")
-        .innerHTML =
-        "❌ You do not have permission.";
+        document.getElementById("status").innerText =
+            "❌ You do not have permission.";
 
         return;
     }
@@ -321,90 +224,53 @@ document
     }
 
     const payload = {
-
         embeds: [{
-
-            title:
-            `${embedEmoji} ${title}`,
-
-            description:
-            message,
-
-            color:
-            embedColor,
-
+            title: `${embedEmoji} ${title}`,
+            description: message,
+            color: embedColor,
             fields: [
-
                 {
                     name: "Sent By",
                     value: currentUser,
                     inline: true
                 },
-
                 {
                     name: "Type",
                     value: type,
                     inline: true
                 }
-
             ],
-
             footer: {
-                text:
-                "Bloxd Millitary Admin System"
+                text: "Bloxd Military Admin System"
             },
-
-            timestamp:
-            new Date()
-
+            timestamp: new Date()
         }]
-
     };
 
-    try{
+    try {
 
-        const response = await fetch(
-            webhooks[type],
-            {
-                method:"POST",
-
-                headers:{
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body:
-                JSON.stringify(payload)
-            }
-        );
+        const response = await fetch(webhooks[type], {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(payload)
+        });
 
         if(response.ok){
+            document.getElementById("status").innerText =
+                "✅ Embed sent successfully.";
 
-            document
-            .getElementById("status")
-            .innerHTML =
-            "✅ Embed sent successfully.";
-
-            document
-            .getElementById("adminForm")
-            .reset();
+            document.getElementById("adminForm").reset();
 
         } else {
-
-            document
-            .getElementById("status")
-            .innerHTML =
-            "❌ Failed to send embed.";
-
+            document.getElementById("status").innerText =
+                "❌ Failed to send embed.";
         }
 
-    } catch(error){
-
-        document
-        .getElementById("status")
-        .innerHTML =
-        "❌ Error sending embed.";
-
+    } catch(err){
+        document.getElementById("status").innerText =
+            "❌ Error sending embed.";
     }
 
 });
