@@ -122,6 +122,7 @@ button:hover{
             <option value="Announcement">Announcement</option>
             <option value="Warning">Warning</option>
             <option value="Development">Development Update</option>
+            <option value="Staff">Message Staff</option>
         </select>
 
         <input type="text" id="title" placeholder="Embed Title" required>
@@ -138,26 +139,47 @@ button:hover{
 
 <script>
 
+/* ACCOUNTS */
 const accounts = {
-    creamkimi: "TheCreamiestOfThemAll2026",
-    systemtesting: "systemtesting",
-    nochillyt: "TheCodedCoder",
-    d3coy: "Founders?",
-    developer: "theDeveloper",
-    moderator: "theModerator",
-    announcer: "theAnnouncer"
+    d3coyalt: "4821",
+    "_st4rsz_": "1937",
+    abc_logout: "5604",
+    n0250: "7749",
+    itz_sean0202: "3186",
+    doctortrainman: "9052",
+    creamkimi: "1468",
+    idkwhy__: "6720",
+    nochillyt: "8391",
+    billionfatcatdc: "2507",
+    z_simple_z: "6184",
+    "i.love.mrp": "4309",
+    leopardstarx_or_cyleo_or_cyan: "7925",
+    samps013263: "1058",
+    elektronomia_fanyt: "8840",
+    broblox33: "2673",
+    _3dlon: "9516",
+    nocaryn: "6402",
+    lu2812: "3785",
+    _zainab_bloxd__72262: "7091",
+    nnn123_45698: "5120",
+    __ichor__: "8467",
+    warfig55: "2306",
+    summerzizhere: "9953",
+    ___n___250: "1649"
 };
 
 const permissions = {
     Announcement: ["creamkimi","nochillyt","d3coy","announcer","systemtesting"],
     Warning: ["moderator","creamkimi","nochillyt","d3coy","systemtesting"],
-    Development: ["nochillyt","creamkimi","d3coy","developer","systemtesting"]
+    Development: ["nochillyt","creamkimi","d3coy","developer","systemtesting"],
+    Staff: ["nochillyt","creamkimi","d3coy"]
 };
 
 const webhooks = {
     Announcement: "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
     Warning: "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
-    Development: "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
+    Development: "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5",
+    Staff: "https://discord.com/api/webhooks/1404800243161239562/Uvdfm-zcWHDwmon_Gc4fDUmMtCPaqNj2Qc0hTpQDeJIZi11TSwJPu1x3RWiBqMbtOBwR"
 };
 
 let currentUser = "";
