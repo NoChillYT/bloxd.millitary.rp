@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Bloxd Military Admin Portal</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+body{
+    background:#050505;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.admin-login,
+.admin-panel{
+    width:90%;
+    max-width:700px;
+    margin:60px auto;
+    background:#111827;
+    padding:35px;
+    border-radius:20px;
+    border:2px solid #5cff8d;
+    box-shadow:0 0 25px rgba(92,255,141,0.2);
+}
+
+h1{
+    text-align:center;
+    margin-bottom:30px;
+    color:#9dffb8;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:15px;
+    margin-bottom:20px;
+    background:#0d1117;
+    border:1px solid #5cff8d;
+    border-radius:12px;
+    color:white;
+    font-size:16px;
+}
+
+textarea{
+    height:220px;
+    resize:none;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    background:#5cff8d;
+    color:black;
+    border:none;
+    border-radius:12px;
+    font-size:17px;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button:hover{
+    transform:scale(1.02);
+    box-shadow:0 0 20px #5cff8d;
+}
+
+#status{
+    text-align:center;
+    margin-top:20px;
+    font-weight:bold;
+}
+
+.role-box{
+    background:#0d1117;
+    padding:15px;
+    border-radius:12px;
+    margin-bottom:20px;
+    border:1px solid #2d3748;
+}
+
+.hidden{display:none;}
+</style>
+
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div class="admin-login" id="loginBox">
+
+<h1>🔒 Admin Login</h1>
+
+<input type="text" id="username" placeholder="Username">
+<input type="password" id="password" placeholder="Password">
+
+<button onclick="login()">Login</button>
+
+<p id="loginStatus"></p>
+</div>
+
+<!-- PANEL -->
+<div class="admin-panel hidden" id="adminPanel">
+
+<h1>🛠 Admin Portal</h1>
+
+<div class="role-box">
+Logged in as:
+<span id="loggedUser"></span>
+</div>
+
+<form id="adminForm">
+
+<select id="messageType" required>
+<option value="">Select Message Type</option>
+<option value="Announcement">Announcement</option>
+<option value="Warning">Warning</option>
+<option value="Development">Development Update</option>
+<option value="Staff">Message Staff</option>
+</select>
+
+<input type="text" id="title" placeholder="Embed Title" required>
+
+<textarea id="message" placeholder="Message Content" required></textarea>
+
+<button type="submit">Send Embed</button>
+
+</form>
+
+<p id="status"></p>
+
+</div>
+
+<script>
+
+/* ACCOUNTS */
+const accounts = {
+    d3coyalt:"4821",
+    "_st4rsz_":"1937",
+    abc_logout:"5604",
+    n0250:"7749",
+    itz_sean0202:"3186",
+    doctortrainman:"9052",
+    creamkimi:"1468",
+    idkwhy__:"6720",
+    nochillyt:"8391",
+    billionfatcatdc:"2507",
+    z_simple_z:"6184",
+    "i.love.mrp":"4309",
+    leopardstarx_or_cyleo_or_cyan:"7925",
+    samps013263:"1058",
+    elektronomia_fanyt:"8840",
+    broblox33:"2673",
+    _3dlon:"9516",
+    nocaryn:"6402",
+    lu2812:"3785",
+    _zainab_bloxd__72262:"7091",
+    nnn123_45698:"5120",
+    __ichor__:"8467",
+    warfig55:"2306",
+    summerzizhere:"9953",
+    ___n___0250:"1649"
+};
+
+/* ROLES (FINAL STRUCTURE) */
+const roles = {
+    owner:["d3coyalt"],
+    mrp_co_owner:["creamkimi"],
+    head_dev:["nochillyt"],
+    head_admin:["idkwhy__"],
+
+    discord_mods:[
+        "leopardstarx_or_cyleo_or_cyan",
+        "samps013263",
+        "elektronomia_fanyt",
+        "lu2812",
+        "warfig55"
+    ],
+
+    developers:[
+        "billionfatcatdc",
+        "i.love.mrp",
+        "broblox33",
+        "_3dlon",
+        "summerzizhere"
+    ],
+
+    in_game_mods:[
+        "_st4rsz_",
+        "itz_sean0202",
+        "z_simple_z",
+        "___n___0250"
+    ],
+
+    in_game_admins:[
+        "abc_logout",
+        "doctortrainman",
+        "nochillyt"
+    ],
+
+    mrp_admins:[
+        "itz_sean0202",
+        "nochillyt",
+        "nocaryn",
+        "nnn123_45698",
+        "__ichor__",
+        "_zainab_bloxd__72262"
+    ]
+};
+
+/* PERMISSIONS (DERIVED FROM ROLES) */
+const permissions = {
+    Announcement:[
+        ...roles.owner,
+        ...roles.mrp_co_owner,
+        ...roles.head_dev,
+        ...roles.head_admin,
+        ...roles.discord_mods,
+        ...roles.developers,
+        ...roles.in_game_admins
+    ],
+
+    Warning:[
+        ...roles.owner,
+        ...roles.mrp_co_owner,
+        ...roles.head_dev,
+        ...roles.head_admin,
+        ...roles.discord_mods,
+        ...roles.developers,
+        ...roles.in_game_admins,
+        ...roles.in_game_mods
+    ],
+
+    Development:[
+        ...roles.owner,
+        ...roles.mrp_co_owner,
+        ...roles.head_dev,
+        ...roles.developers
+    ],
+
+    Staff:[
+        ...roles.owner,
+        ...roles.mrp_co_owner,
+        ...roles.head_dev,
+        ...roles.head_admin
+    ]
+};
+
+/* WEBHOOKS (UNCHANGED - KEEP YOUR REAL ONES) */
+const webhooks = {
+    Announcement: "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
+    Warning: "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
+    Development: "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5",
+    Staff: "https://discord.com/api/webhooks/1404800243161239562/Uvdfm-zcWHDwmon_Gc4fDUmMtCPaqNj2Qc0hTpQDeJIZi11TSwJPu1x3RWiBqMbtOBwR"
+};
+
+let currentUser = "";
+
+/* LOGIN */
+function login(){
+
+    const username = document.getElementById("username").value.toLowerCase();
+    const password = document.getElementById("password").value;
+
+    if(accounts[username] === password){
+
+        currentUser = username;
+
+        document.getElementById("loginBox").classList.add("hidden");
+        document.getElementById("adminPanel").classList.remove("hidden");
+
+        document.getElementById("loggedUser").innerText = username;
+
+    } else {
+        document.getElementById("loginStatus").innerText =
+            "❌ Invalid login.";
+    }
+}
+
+/* SEND EMBED */
+document.getElementById("adminForm")
+.addEventListener("submit", async function(e){
+
+    e.preventDefault();
+
+    const type = document.getElementById("messageType").value;
+    const title = document.getElementById("title").value;
+    const message = document.getElementById("message").value;
+
+    if(!permissions[type]?.includes(currentUser)){
+        document.getElementById("status").innerText =
+            "❌ You do not have permission.";
+        return;
+    }
+
+    let embedColor = 65280;
+    let embedEmoji = "📢";
+
+    if(type === "Warning"){embedColor=16711680;embedEmoji="⚠️";}
+    if(type === "Development"){embedColor=5763719;embedEmoji="🛠";}
+
+    const payload = {
+        embeds:[{
+            title:`${embedEmoji} ${title}`,
+            description:message,
+            color:embedColor,
+            fields:[
+                {name:"Sent By",value:currentUser,inline:true},
+                {name:"Type",value:type,inline:true}
+            ],
+            footer:{text:"Bloxd Military Admin System"},
+            timestamp:new Date()
+        }]
+    };
+
+    try{
+
+        const res = await fetch(webhooks[type],{
+            method:"POST",
+            headers:{"Content-Type":"application/json"},
+            body:JSON.stringify(payload)
+        });
+
+        document.getElementById("status").innerText =
+            res.ok ? "✅ Embed sent successfully." : "❌ Failed to send embed.";
+
+        if(res.ok) document.getElementById("adminForm").reset();
+
+    } catch(err){
+        document.getElementById("status").innerText =
+            "❌ Error sending embed.";
+    }
+
+});
+</script>
+
+</body>
+</html>
