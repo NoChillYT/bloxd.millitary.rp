@@ -2,411 +2,94 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Bloxd Millitary Admin Portal</title>
-
-<link rel="stylesheet" href="style.css">
-
+<title>Admin Portal</title>
 <style>
-
 body{
     background:#050505;
     color:white;
-    font-family:Arial,sans-serif;
+    font-family:Arial;
 }
-
-.admin-login,
-.admin-panel{
+.container{
     width:90%;
     max-width:700px;
     margin:60px auto;
     background:#111827;
-    padding:35px;
-    border-radius:20px;
-    border:2px solid #5cff8d;
-    box-shadow:0 0 25px rgba(92,255,141,0.2);
+    padding:25px;
+    border-radius:15px;
+    border:1px solid #5cff8d;
 }
-
-h1{
-    text-align:center;
-    margin-bottom:30px;
-    color:#9dffb8;
-}
-
-input,
-select,
-textarea{
+input, select, textarea{
     width:100%;
-    padding:15px;
-    margin-bottom:20px;
+    margin:10px 0;
+    padding:12px;
     background:#0d1117;
     border:1px solid #5cff8d;
-    border-radius:12px;
     color:white;
-    font-size:16px;
+    border-radius:10px;
 }
-
-textarea{
-    height:220px;
-    resize:none;
-}
-
 button{
     width:100%;
-    padding:15px;
+    padding:12px;
     background:#5cff8d;
-    color:black;
     border:none;
-    border-radius:12px;
-    font-size:17px;
     font-weight:bold;
     cursor:pointer;
-    transition:0.3s;
 }
-
-button:hover{
-    transform:scale(1.02);
-    box-shadow:0 0 20px #5cff8d;
-}
-
-#status{
-    text-align:center;
-    margin-top:20px;
-    font-weight:bold;
-}
-
-.role-box{
-    background:#0d1117;
-    padding:15px;
-    border-radius:12px;
-    margin-bottom:20px;
-    border:1px solid #2d3748;
-}
-
-.hidden{
-    display:none;
-}
-
 </style>
-
 </head>
 <body>
 
-<div class="admin-login" id="loginBox">
+<div class="container">
 
-    <h1>🔒 Admin Login</h1>
+<h2>Admin Portal</h2>
 
-    <input
-        type="text"
-        id="username"
-        placeholder="Username"
-    >
+<input id="user" placeholder="Username">
+<input id="pass" type="password" placeholder="Password">
 
-    <input
-        type="password"
-        id="password"
-        placeholder="Password"
-    >
+<hr>
 
-    <button onclick="login()">
-        Login
-    </button>
+<select id="type">
+    <option value="Announcement">Announcement</option>
+    <option value="Warning">Warning</option>
+    <option value="Development">Development</option>
+    <option value="DM">DM</option>
+</select>
 
-    <p id="loginStatus"></p>
+<input id="title" placeholder="Title">
 
-</div>
+<textarea id="message" placeholder="Message"></textarea>
 
-<div class="admin-panel hidden" id="adminPanel">
+<input id="target" placeholder="Target Discord User ID (for DM only)">
 
-    <h1>🛠 Admin Portal</h1>
+<button onclick="send()">Send</button>
 
-    <div class="role-box">
-        Logged in as:
-        <span id="loggedUser"></span>
-    </div>
-
-    <form id="adminForm">
-
-        <select id="messageType" required>
-            <option value="">
-                Select Message Type
-            </option>
-
-            <option value="Announcement">
-                Announcement
-            </option>
-
-            <option value="Warning">
-                Warning
-            </option>
-
-            <option value="Development">
-                Development Update
-            </option>
-        </select>
-
-        <input
-            type="text"
-            id="title"
-            placeholder="Embed Title"
-            required
-        >
-
-        <textarea
-            id="message"
-            placeholder="Message Content"
-            required
-        ></textarea>
-
-        <button type="submit">
-            Send Embed
-        </button>
-
-    </form>
-
-    <p id="status"></p>
+<p id="status"></p>
 
 </div>
 
 <script>
 
-const accounts = {
+async function send(){
 
-    creamkimi:
-    "TheCreamiestOfThemAll2026",
-
-    systemtesting:
-    "systemtesting",
-
-    nochillyt:
-    "TheCodedCoder",
-
-    d3coy:
-    "Founders?",
-
-    developer:
-    "theDeveloper",
-
-    moderator:
-    "theModerator",
-
-    announcer:
-    "theAnnouncer"
-
-};
-
-const permissions = {
-
-    Announcement: [
-        "creamkimi",
-        "nochillyt",
-        "d3coy",
-        "announcer",
-        "systemtesting"
-    ],
-
-    Warning: [
-        "moderator",
-        "creamkimi",
-        "nochillyt",
-        "d3coy",
-        "systemtesting"
-    ],
-
-    Development: [
-        "nochillyt",
-        "creamkimi",
-        "d3coy",
-        "developer",
-        "systemtesting"
-    ]
-
-};
-
-const webhooks = {
-
-    Announcement:
-    "https://discord.com/api/webhooks/1404840607750553692/eByunZ4LLAI0lEx1QOPX9RVmq_5xEabET01WmLBsuBvkdz2oHWUCKEgaPJt0_RupFxew",
-
-    Warning:
-    "https://discord.com/api/webhooks/1504635175290671125/sjzP4wPNonMAGJ8GBv92PANgFoMCnHigplfyOXeyGCciWmHJ64V00vKffqTh3fwXRbSu",
-
-    Development:
-    "https://discord.com/api/webhooks/1504635320686084123/-vgIcEZLdBhW_UB35Pae78utD-ucyfFNL5-VijOC1k45f3h-QYErDJ_XV_xOoZt89ic5"
-
-};
-
-let currentUser = "";
-
-function login(){
-
-    const username =
-    document.getElementById("username").value
-    .toLowerCase();
-
-    const password =
-    document.getElementById("password").value;
-
-    if(accounts[username] === password){
-
-        currentUser = username;
-
-        document
-        .getElementById("loginBox")
-        .classList
-        .add("hidden");
-
-        document
-        .getElementById("adminPanel")
-        .classList
-        .remove("hidden");
-
-        document
-        .getElementById("loggedUser")
-        .innerHTML =
-        username;
-
-    } else {
-
-        document
-        .getElementById("loginStatus")
-        .innerHTML =
-        "❌ Invalid login.";
-
-    }
-
-}
-
-document
-.getElementById("adminForm")
-.addEventListener("submit", async function(e){
-
-    e.preventDefault();
-
-    const type =
-    document.getElementById("messageType").value;
-
-    const title =
-    document.getElementById("title").value;
-
-    const message =
-    document.getElementById("message").value;
-
-    if(
-        !permissions[type]
-        .includes(currentUser)
-    ){
-
-        document
-        .getElementById("status")
-        .innerHTML =
-        "❌ You do not have permission.";
-
-        return;
-    }
-
-    let embedColor = 65280;
-    let embedEmoji = "📢";
-
-    if(type === "Warning"){
-        embedColor = 16711680;
-        embedEmoji = "⚠️";
-    }
-
-    if(type === "Development"){
-        embedColor = 5763719;
-        embedEmoji = "🛠";
-    }
-
-    const payload = {
-
-        embeds: [{
-
-            title:
-            `${embedEmoji} ${title}`,
-
-            description:
-            message,
-
-            color:
-            embedColor,
-
-            fields: [
-
-                {
-                    name: "Sent By",
-                    value: currentUser,
-                    inline: true
-                },
-
-                {
-                    name: "Type",
-                    value: type,
-                    inline: true
-                }
-
-            ],
-
-            footer: {
-                text:
-                "Bloxd Millitary Admin System"
-            },
-
-            timestamp:
-            new Date()
-
-        }]
-
+    const data = {
+        user: document.getElementById("user").value,
+        pass: document.getElementById("pass").value,
+        type: document.getElementById("type").value,
+        title: document.getElementById("title").value,
+        message: document.getElementById("message").value,
+        target: document.getElementById("target").value
     };
 
-    try{
+    const res = await fetch("http://localhost:3000/api/send", {
+        method:"POST",
+        headers:{"Content-Type":"application/json"},
+        body: JSON.stringify(data)
+    });
 
-        const response = await fetch(
-            webhooks[type],
-            {
-                method:"POST",
+    const out = await res.json();
+    document.getElementById("status").innerText = out.msg;
 
-                headers:{
-                    "Content-Type":
-                    "application/json"
-                },
-
-                body:
-                JSON.stringify(payload)
-            }
-        );
-
-        if(response.ok){
-
-            document
-            .getElementById("status")
-            .innerHTML =
-            "✅ Embed sent successfully.";
-
-            document
-            .getElementById("adminForm")
-            .reset();
-
-        } else {
-
-            document
-            .getElementById("status")
-            .innerHTML =
-            "❌ Failed to send embed.";
-
-        }
-
-    } catch(error){
-
-        document
-        .getElementById("status")
-        .innerHTML =
-        "❌ Error sending embed.";
-
-    }
-
-});
+}
 
 </script>
 
